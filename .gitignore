@@ -10,3 +10,4 @@ tests/.coverage
 /simplemooc/__init__.py
 .idea/
 venv/
+.DS_Store
