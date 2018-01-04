@@ -1,6 +1,15 @@
 from django.db import models
 
 
+class CourseManager(models.Manager):
+
+    def search(self, query):
+        return self.get_queryset().filter(
+            models.Q(name__icontains=query) |
+            models.Q(description__icontains=query)
+        )
+
+
 class Course(models.Model):
     name = models.CharField(verbose_name='Nome', max_length=100)
     slug = models.SlugField(verbose_name='Atalho')
@@ -9,3 +18,5 @@ class Course(models.Model):
     image = models.ImageField(verbose_name='Imagem', upload_to='courses/images', null=True, blank=True)
     create_at = models.DateTimeField(verbose_name='Criado em', auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name='Atualizado em', auto_now=True)
+
+    objects = CourseManager()
