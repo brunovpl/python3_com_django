@@ -14,3 +14,4 @@ tests/.coverage
 venv/
 simplemooc/db.sqlite3
 .DS_Store
+/simplemooc/simplemooc/media/
