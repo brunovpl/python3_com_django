@@ -4,12 +4,6 @@
 __pycache__
 MANIFEST
 tests/.coverage
-/simplemooc/simplemooc/core/migrations/__init__.py
-/simplemooc/simplemooc/core/__init__.py
-/simplemooc/simplemooc/courses/migrations/__init__.py
-/simplemooc/simplemooc/courses/__init__.py
-/simplemooc/simplemooc/__init__.py
-/simplemooc/__init__.py
 .idea/
 venv/
 simplemooc/db.sqlite3
