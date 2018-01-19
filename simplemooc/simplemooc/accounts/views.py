@@ -1,9 +1,11 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 from .forms import RegisterForm
 
 
+@login_required
 def dashboard(request):
     template_name = 'accounts/dashboard.html'
     return render(request=request, template_name=template_name)
