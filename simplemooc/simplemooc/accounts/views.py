@@ -4,6 +4,11 @@ from django.shortcuts import render, redirect
 from .forms import RegisterForm
 
 
+def dashboard(request):
+    template_name = 'accounts/dashboard.html'
+    return render(request=request, template_name=template_name)
+
+
 def register(request):
     template_name = 'accounts/register.html'
     if request.method == 'POST':
