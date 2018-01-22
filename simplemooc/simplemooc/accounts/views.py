@@ -1,9 +1,8 @@
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import PasswordChangeForm
-from django.shortcuts import render, redirect
+from django.contrib.auth.forms import PasswordChangeForm, SetPasswordForm
+from django.shortcuts import render, redirect, get_object_or_404
 
-from simplemooc.core.utils import generate_hash_key
 from .forms import RegisterForm, EditAccountForm, PasswordResetForm
 from .models import PasswordReset
 
@@ -68,10 +67,20 @@ def password_reset(request):
     form = PasswordResetForm(request.POST or None)
     context = {}
     if form.is_valid():
-        user = User.objects.get(email=form.cleaned_data['email'])
-        key = generate_hash_key(salt=user.username)
-        reset = PasswordReset(key=key, user=user)
-        reset.save()
+        form.save()
+        context['success'] = True
+
+    context['form'] = form
+    return render(request=request, template_name=template_name, context=context)
+
+
+def password_reset_confirm(request, key):
+    template_name = 'accounts/password_reset_confirm.html'
+    reset = get_object_or_404(PasswordReset, key=key)
+    form = SetPasswordForm(user=reset.user, data=request.POST or None)
+    context = {}
+    if form.is_valid():
+        form.save()
         context['success'] = True
     context['form'] = form
     return render(request=request, template_name=template_name, context=context)

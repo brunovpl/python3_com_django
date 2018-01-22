@@ -11,4 +11,6 @@ urlpatterns = [
     path('nova-senha/', views.password_reset,  name='password_reset'),
     path('editar', views.edit,  name='edit'),
     path('editar-senha', views.edit_password,  name='edit_password'),
+    path('confirmar-nova-senha/<str:key>/', views.password_reset_confirm, name='password_reset_confirm'),
+
 ]
