@@ -18,7 +18,7 @@ class Course(models.Model):
     about = models.TextField(verbose_name="Sobre o Curso", blank=True)
     start_date = models.DateField(verbose_name='Data de Início', null=True, blank=True)
     image = models.ImageField(verbose_name='Imagem', upload_to='courses/images', null=True, blank=True)
-    create_at = models.DateTimeField(verbose_name='Criado em', auto_now_add=True)
+    created_at = models.DateTimeField(verbose_name='Criado em', auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name='Atualizado em', auto_now=True)
 
     objects = CourseManager()

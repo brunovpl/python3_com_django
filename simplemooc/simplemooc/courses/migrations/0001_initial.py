@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(blank=True, verbose_name='Descrição')),
                 ('start_date', models.DateField(blank=True, null=True, verbose_name='Data de Início')),
                 ('image', models.ImageField(upload_to='courses/images', verbose_name='Imagem')),
-                ('create_at', models.DateTimeField(auto_now_add=True, verbose_name='Criado em')),
+                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Criado em')),
                 ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Atualizado em')),
             ],
         ),
