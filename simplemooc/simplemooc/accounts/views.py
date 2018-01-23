@@ -5,14 +5,15 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .forms import RegisterForm, EditAccountForm, PasswordResetForm
 from .models import PasswordReset
-
+from simplemooc.courses.models import Enrollment
 User = get_user_model()
 
 
 @login_required
 def dashboard(request):
     template_name = 'accounts/dashboard.html'
-    return render(request=request, template_name=template_name)
+    context = {'enrollments': Enrollment.objects.filter(user=request.user)}
+    return render(request=request, template_name=template_name, context=context)
 
 
 @login_required
