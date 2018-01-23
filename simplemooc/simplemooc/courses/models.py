@@ -50,7 +50,11 @@ class Enrollment(models.Model):
     created_at = models.DateTimeField(verbose_name='Criado em', auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name='Atualizado em', auto_now=True)
 
+    def active(self):
+        self.status = 1
+        self.save()
+
     class Meta:
-        verbose_name='Inscrição'
-        verbose_name_plural='Inscrições'
-        unique_together=(('user', 'course'),)
+        verbose_name = 'Inscrição'
+        verbose_name_plural = 'Inscrições'
+        unique_together = (('user', 'course'),)
