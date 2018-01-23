@@ -31,6 +31,10 @@ class Course(models.Model):
         verbose_name_plural = 'Cursos'
         ordering = ['name']
 
+    @models.permalink
+    def get_absolute_url(self):
+        return 'courses:details', (), {'slug': self.slug}
+
 
 class Enrollment(models.Model):
     STATUS_CHOICE = (
