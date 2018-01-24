@@ -1,7 +1,7 @@
 <li class="pure-menu-heading">Cursos</li>
 {% for enrollment in enrollments %}
 <li>
-    <a href="{{ course.get_absolute_url }}">
+    <a href="{% url 'courses:announcements' enrollment.course.slug %}">
         <i class="fas fa-book"></i>
         {{ enrollment.course }}
     </a>

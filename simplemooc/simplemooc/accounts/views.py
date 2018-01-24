@@ -1,11 +1,13 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm, SetPasswordForm
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
+
+from simplemooc.courses.models import Enrollment
 from .forms import RegisterForm, EditAccountForm, PasswordResetForm
 from .models import PasswordReset
-from simplemooc.courses.models import Enrollment
+
 User = get_user_model()
 
 
