@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
-from .forms import ContactCourse
+from .forms import ContactCourse, CommentForm
 from .models import Course, Enrollment, Announcements
 
 
@@ -89,11 +89,22 @@ def show_announcement(request, slug,  pk):
             messages.error(request=request, message='Sua inscrição está pendente')
             return redirect('accounts:dashboard')
 
+    announcement = get_object_or_404(Announcements, pk=pk)
+    form = CommentForm(request.POST or None)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.user = request.user
+        comment.announcement = announcement
+        comment.save()
+        form = CommentForm()
+        messages.success(request=request, message='Seu comentário foi enviado com sucesso')
+
     template_name = 'courses/show_announcement.html'
     announcement = get_object_or_404(course.announcements.all(), pk=pk)
     context = {
         'course': course,
         'announcement': announcement,
+        'form': form,
     }
 
     return render(request=request, template_name=template_name, context=context)
