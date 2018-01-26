@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 
-from simplemooc.core.mail import send_mail_template
+from simplemooc.core.email import send_mail_template
 from simplemooc.core.utils import generate_hash_key
 from .models import PasswordReset
 

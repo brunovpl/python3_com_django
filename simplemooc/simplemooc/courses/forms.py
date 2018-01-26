@@ -1,7 +1,7 @@
 from django import forms
 from django.conf import settings
 
-from simplemooc.core.mail import send_mail_template
+from simplemooc.core.email import send_mail_template
 from .models import Comment
 
 
