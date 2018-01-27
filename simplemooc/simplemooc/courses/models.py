@@ -107,7 +107,45 @@ def post_save_announcement(instance, created, **kwargs):
         enrollments = Enrollment.objects.filter(course=instance.course, status=1)
         for enrollment in enrollments:
             recipient_list = [enrollment.user.email]
-            send_mail_template(subject=subject, template_name=template_name, context=context, recipient_list=recipient_list)
+            send_mail_template(subject=subject, template_name=template_name, context=context,
+                               recipient_list=recipient_list)
 
 
 models.signals.post_save.connect(post_save_announcement, sender=Announcements, dispatch_uid='post_save_announcement')
+
+
+class Lesson(models.Model):
+    name = models.CharField(verbose_name='Nome', max_length=100)
+    description = models.TextField(verbose_name='Descrição', blank=True)
+    number = models.IntegerField(verbose_name='Número (ordem)', blank=True, default=0)
+    release_date = models.DateField(verbose_name='Data da Liberação', blank=True, null=True)
+
+    course = models.ForeignKey(to=Course, verbose_name='Curso', related_name='lessons', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(verbose_name='Criado em', auto_now_add=True)
+    updated_at = models.DateTimeField(verbose_name='Atualizado em', auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Aula'
+        verbose_name_plural = 'Aulas'
+        ordering = ['number']
+
+
+class Material(models.Model):
+    name = models.CharField(verbose_name='Nome', max_length=100)
+    embedded = models.TextField(verbose_name='Vídeo embedded', blank=True)
+    file = models.FileField(upload_to='lessons/materials', blank=True, null=True)
+    
+    lesson = models.ForeignKey(to=Lesson, verbose_name='Aula', related_name='materials', on_delete=models.CASCADE)
+
+    def is_embedded(self):
+        return bool(self.embedded)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Material'
+        verbose_name_plural = 'Materiais'
