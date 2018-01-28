@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 
 from simplemooc.core.email import send_mail_template
 
@@ -27,6 +28,10 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
+
+    def release_lessons(self):
+        today = timezone.now().date()
+        return self.lessons.filter(release_date__lte=today)
 
     class Meta:
         verbose_name = 'Curso'
@@ -127,6 +132,13 @@ class Lesson(models.Model):
     def __str__(self):
         return self.name
 
+    def is_available(self):
+        if self.release_date:
+            today = timezone.now().date()
+            return self.release_date <= today
+        else:
+            return False
+
     class Meta:
         verbose_name = 'Aula'
         verbose_name_plural = 'Aulas'
@@ -137,7 +149,7 @@ class Material(models.Model):
     name = models.CharField(verbose_name='Nome', max_length=100)
     embedded = models.TextField(verbose_name='Vídeo embedded', blank=True)
     file = models.FileField(upload_to='lessons/materials', blank=True, null=True)
-    
+
     lesson = models.ForeignKey(to=Lesson, verbose_name='Aula', related_name='materials', on_delete=models.CASCADE)
 
     def is_embedded(self):
