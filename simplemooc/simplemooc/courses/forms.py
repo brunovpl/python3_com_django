@@ -22,7 +22,6 @@ class ContactCourse(forms.Form):
         send_mail_template(subject=subject, template_name=template_name, context=context,
                            recipient_list=[settings.CONTACT_EMAIL])
 
-
 class CommentForm(forms.ModelForm):
 
     class Meta:
