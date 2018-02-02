@@ -114,7 +114,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'simplemooc', 'media')
 MEDIA_URL = '/media/'
 
@@ -134,3 +141,23 @@ LOGIN_URL = 'accounts:login'
 LOGIN_REDIRECT_URL = 'core:home'
 LOGOUT_URL = 'accounts:logout'
 AUTH_USER_MODEL = 'accounts.User'
+
+
+# Configure Django App for Heroku.
+import django_heroku
+django_heroku.settings(locals())
+
+# Update database configuration with $DATABASE_URL.
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
+
+MIDDLEWARE_CLASSES = (
+    # Simplified static file serving.
+    # https://warehouse.python.org/project/whitenoise/
+    'whitenoise.middleware.WhiteNoiseMiddleware')
+
+# Simplified static file serving.
+# https://warehouse.python.org/project/whitenoise/
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
