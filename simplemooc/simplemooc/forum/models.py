@@ -1,12 +1,14 @@
 from django.conf import settings
 from django.db import models
+from django.db.models import CASCADE
 from taggit.managers import TaggableManager
 
 
 class Thread(models.Model):
     title = models.CharField(verbose_name='Título', max_length=100)
     body = models.TextField(verbose_name='Mensagem')
-    author = models.ForeignKey(to=settings.AUTH_USER_MODEL, verbose_name='Autor', related_name='threads')
+    author = models.ForeignKey(to=settings.AUTH_USER_MODEL, verbose_name='Autor', related_name='threads',
+                               on_delete=CASCADE)
     views = models.IntegerField(verbose_name='Visualizações', blank=True, default=0)
     answers = models.IntegerField(verbose_name='Respostas', blank=True, default=0)
     tags = TaggableManager()
@@ -25,7 +27,8 @@ class Thread(models.Model):
 
 class Reply(models.Model):
     reply = models.TextField(verbose_name='Resposta')
-    author = models.ForeignKey(to=settings.AUTH_USER_MODEL, verbose_name='Autor', related_name='replies')
+    author = models.ForeignKey(to=settings.AUTH_USER_MODEL, verbose_name='Autor', related_name='replies',
+                               on_delete=CASCADE)
 
     correct = models.BooleanField(verbose_name='Correta?', blank=True, default=False)
     created_at = models.DateTimeField(verbose_name='Criado em', auto_now_add=True)
@@ -33,8 +36,8 @@ class Reply(models.Model):
 
     def __str__(self):
         return self.reply[:100]
-    
+
     class Meta:
-        verbose_name='Resposta'
-        verbose_name_plural='Respostas'
+        verbose_name = 'Resposta'
+        verbose_name_plural = 'Respostas'
         ordering = ['-correct', 'created_at']
