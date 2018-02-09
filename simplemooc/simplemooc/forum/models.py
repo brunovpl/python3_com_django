@@ -26,6 +26,7 @@ class Thread(models.Model):
 
 
 class Reply(models.Model):
+    thread = models.ForeignKey(to=Thread, verbose_name='Tópico', related_name='replies', on_delete=CASCADE)
     reply = models.TextField(verbose_name='Resposta')
     author = models.ForeignKey(to=settings.AUTH_USER_MODEL, verbose_name='Autor', related_name='replies',
                                on_delete=CASCADE)
