@@ -1,4 +1,4 @@
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 from .models import Thread
 
@@ -27,5 +27,16 @@ class ForumView(ListView):
         context['tags'] = Thread.tags.all()
         return context
 
+class ThreadView(DetailView):
+    model = Thread
+    template_name = 'forum/thread.html'
+
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(ThreadView, self).get_context_data(**kwargs)
+        context['tags'] = Thread.tags.all()
+        return context
+
 
 index = ForumView.as_view()
+thread = ThreadView.as_view()

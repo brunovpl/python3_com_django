@@ -6,6 +6,7 @@ from taggit.managers import TaggableManager
 
 class Thread(models.Model):
     title = models.CharField(verbose_name='Título', max_length=100)
+    slug = models.SlugField(verbose_name='Identificador', max_length=100, unique=True)
     body = models.TextField(verbose_name='Mensagem')
     author = models.ForeignKey(to=settings.AUTH_USER_MODEL, verbose_name='Autor', related_name='threads',
                                on_delete=CASCADE)
@@ -18,6 +19,10 @@ class Thread(models.Model):
 
     def __str__(self):
         return self.title
+
+    @models.permalink
+    def get_absolute_url(self):
+        return 'forum:thread', (), {'slug': self.slug}
 
     class Meta:
         verbose_name = 'Tópico'
