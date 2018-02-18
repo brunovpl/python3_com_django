@@ -50,9 +50,10 @@ class Reply(models.Model):
 
 
 def post_save_reply(created, instance, **kwargs):
-    if created:
-        instance.thread.answers = instance.thread.replies.count()
-        instance.thread.save()
+    instance.thread.answers = instance.thread.replies.count()
+    instance.thread.save()
+    if instance.correct:
+        instance.thread.replies.exclude(pk=instance.pk).update(correct=False)
 
 
 def post_delete_replay(instance, **kwargs):
