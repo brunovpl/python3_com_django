@@ -47,3 +47,18 @@ class Reply(models.Model):
         verbose_name = 'Resposta'
         verbose_name_plural = 'Respostas'
         ordering = ['-correct', 'created_at']
+
+
+def post_save_reply(created, instance, **kwargs):
+    if created:
+        instance.thread.answers = instance.thread.replies.count()
+        instance.thread.save()
+
+
+def post_delete_replay(instance, **kwargs):
+    instance.thread.answers = instance.thread.replies.count()
+    instance.thread.save()
+
+
+models.signals.post_save.connect(receiver=post_save_reply, sender=Reply, dispatch_uid='post_save_reply')
+models.signals.post_delete.connect(receiver=post_delete_replay, sender=Reply, dispatch_uid='post_delete_replay')
